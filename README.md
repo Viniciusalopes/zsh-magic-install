@@ -59,7 +59,7 @@ Para instalar para o seu usuário do sistema, apenas digite:
 
 Para instalar para o usuário r00t, então digite:
 
-```# sudo su```
+```$ sudo su```
 
 e depois:
 

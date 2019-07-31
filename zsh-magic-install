@@ -26,7 +26,7 @@
 distro=$(cat /etc/os-release | grep PRETTY | cut -d"\"" -f2 | cut -d' ' -f1)
 
 # Distros testadas
-distros=('Ubuntu' 'KDE' 'Debian')
+distros=('Ubuntu' 'KDE' 'Debian' 'Linux Mint' 'Fedora')
 
 # Flag para continuar o script
 continua=0
@@ -104,6 +104,11 @@ instala()
     || [[ "${distro}" == 'Debian' ]]; then
         sudo apt install -y ${programa}
     fi
+
+    if [[ "${distro}" == 'Fedora' ]]; then
+        [[ "${programa}" == 'fonts-powerline' ]] && { programa='powerline-fonts'; }
+        sudo dnf install -y ${programa} 
+    fi
 }
 
 
@@ -115,8 +120,11 @@ executa()
     ver_dependencia
     programa='git'
     ver_dependencia
-    programa='zsh fonts-powerline'
+    programa='zsh'
     instala
+    programa='fonts-powerline'
+    instala
+    
     
     echo -e "--> Obtendo o oh-my-zsh..."
     wget -O install.sh https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh

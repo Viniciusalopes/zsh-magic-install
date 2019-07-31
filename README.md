@@ -53,7 +53,7 @@ Execute o script uma vez para cada usuário que desejar instalar o zsh.
 
 Para instalar para o seu usuário do sistema, apenas digite:
 
-```# ./zsh-magic-install```
+```$ ./zsh-magic-install```
 
 ---
 

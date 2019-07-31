@@ -26,7 +26,7 @@
 distro=$(cat /etc/os-release | grep PRETTY | cut -d"\"" -f2)
 
 # Distros testadas
-distros=('Ubuntu' 'KDE' 'Debian' 'Linux Mint' 'Fedora' 'Manjaro Linux')
+distros=('Ubuntu' 'KDE' 'Debian' 'Linux Mint' 'Fedora' 'Manjaro Linux' 'Slackware 14.2' )
 
 # Flag para continuar o script
 continua=0
@@ -40,7 +40,7 @@ usuario=$(whoami)
 # Arquivo .zshrc
 arquivo_zshrc="/${usuario}/.zshrc"
 
-# Mensagens
+# Mensagens"
 msg_atencao='\n*******************************************************************************
 ***************************     A T E N Ç Ã O !     ***************************
 *******************************************************************************\n'
@@ -114,7 +114,18 @@ instala()
         [[ "${programa}" == 'fonts-powerline' ]] && { programa='powerline-fonts'; }
         sudo pacman -S --noconfirm ${programa} 
     fi
-
+    if [[ "${distro}" == 'Slackware 14.2' ]]; then
+        if [[ "${programa}" == 'fonts-powerline' ]]; then
+             # clone
+             git clone https://github.com/powerline/fonts.git --depth=1
+             # install
+             cd fonts
+             ./install.sh
+             # clean-up a bit
+             cd ..
+             rm -rf fonts
+        fi
+    fi
 }
 
 

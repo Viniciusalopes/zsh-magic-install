@@ -35,7 +35,16 @@ distro=$(cat /etc/"${release}" | grep "${linha}" | cut -d"\"" -f2)
 
 
 # Distros testadas
-distros=('Ubuntu' 'KDE' 'Debian' 'Linux Mint' 'Fedora' 'Manjaro Linux' 'Slackware 14.2' 'Mazon OS')
+distros=(
+    'Ubuntu 19.04' 
+    'KDE neon User Edition 5.16' 
+    'Debian GNU/Linux 9 (stretch)' 
+    'Linux Mint 19.1' 
+    'Fedora 30 (Thirty)' 
+    'Manjaro Linux' 
+    'Slackware 14.2'
+    'Mazon OS'
+    )
 
 # Flag para continuar o script
 continua=0
@@ -105,16 +114,26 @@ ver_dependencia()
     fi
 }
 
-# Define o gerenciador de pacotes da distro e instala o pacote
+# Define o gerenciador de pacotes da distro e instala o(s) pacote(s)
 instala()
 {
-    if [[ "${distro}" == 'Ubuntu' ]] \
-    || [[ "${distro}" == 'KDE' ]] \
-    || [[ "${distro}" == 'Debian' ]]; then
+    'Ubuntu 19.04' 
+    'KDE neon User Edition 5.16' 
+    'Debian GNU/Linux 9 (stretch)' 
+    'Linux Mint 19.1' 
+    'Fedora 30 (Thirty)' 
+    'Manjaro Linux' 
+    'Slackware 14.2'
+    'Mazon OS'
+
+    if [[ "${distro}" == 'Ubuntu 19.04' ]] \
+    || [[ "${distro}" == 'KDE neon User Edition 5.16' ]] \
+    || [[ "${distro}" == 'Debian GNU/Linux 9 (stretch)' ]] \
+    || [[ "${distro}" == 'Linux Mint 19.1' ]]; then
         sudo apt install -y ${programa}
     fi
 
-    if [[ "${distro}" == 'Fedora' ]]; then
+    if [[ "${distro}" == 'Fedora 30 (Thirty)' ]]; then
         [[ "${programa}" == 'fonts-powerline' ]] && { programa='powerline-fonts'; }
         sudo dnf install -y ${programa} 
     fi
@@ -126,6 +145,7 @@ instala()
 
     if [[ "${distro}" == 'Slackware 14.2' ]] || [[ "${distro}" == 'Mazon OS' ]]; then
         if [[ "${programa}" == 'fonts-powerline' ]]; then
+             # Instala as fontes para distros que não possuem pacotes prontos
              # clone
              git clone https://github.com/powerline/fonts.git --depth=1
              # install
@@ -138,12 +158,11 @@ instala()
     fi
 
     if [[ "${distro}" == 'Mazon OS' ]] && [[ "${programa}" == 'zsh' ]]; then
-        #wget -O /tmp/zsh-5.7.1-1.mz http://mazonos.com/packages/extra/zsh-5.5.1-1.mz
-        wget -O /tmp/zsh-5.7.1-1.mz https://vovolinux.com.br/vovomazon/packages/var/lib/mzphp/unreleased/base/zsh-5.7.1-1.mz --no-check-certificate
+        wget -O /tmp/zsh-5.7.1-1.mz \
+        https://vovolinux.com.br/vovomazon/packages/var/lib/mzphp/unreleased/base/zsh-5.7.1-1.mz \
+        --no-check-certificate
+
         sudo banana -i /tmp/zsh-5.7.1-1.mz
-        # Ajuste pós-instalação
-        chsh -s /bin/zsh
-        #sudo sed -i s"/$usuario:\/bin\/bash/$usuario:/\/bin\/zsh/"g /etc/passwd
     fi
 }
 
@@ -161,6 +180,8 @@ executa()
     programa='fonts-powerline'
     instala
     
+    # Altera o shell de bash para zsh
+    chsh -s /bin/zsh
     
     echo -e "--> Obtendo o oh-my-zsh..."
     wget -O install.sh https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
@@ -179,7 +200,8 @@ executa()
         arquivo_zshrc="/home/${usuario}/.zshrc"
     fi
  
-    rm -rfv lista_users    
+    rm -rfv lista_users
+        
     echo -e "--> Fazendo backup do .zshrc do usuário ${usuario}..."
     cp -v "${arquivo_zshrc}" "${arquivo_zshrc}"-bkp
     echo -e "--> Alterando o tema para agnoster..."

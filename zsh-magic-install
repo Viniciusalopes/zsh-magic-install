@@ -23,10 +23,10 @@
 #--------VÁRIAVEIS------------------------------------------------------------->
 
 # Identifica a Distro
-distro=$(cat /etc/os-release | grep PRETTY | cut -d"\"" -f2 | cut -d' ' -f1)
+distro=$(cat /etc/os-release | grep PRETTY | cut -d"\"" -f2)
 
 # Distros testadas
-distros=('Ubuntu' 'KDE' 'Debian' 'Linux Mint' 'Fedora')
+distros=('Ubuntu' 'KDE' 'Debian' 'Linux Mint' 'Fedora' 'Manjaro Linux')
 
 # Flag para continuar o script
 continua=0
@@ -109,6 +109,12 @@ instala()
         [[ "${programa}" == 'fonts-powerline' ]] && { programa='powerline-fonts'; }
         sudo dnf install -y ${programa} 
     fi
+
+    if [[ "${distro}" == 'Manjaro Linux' ]]; then
+        [[ "${programa}" == 'fonts-powerline' ]] && { programa='powerline-fonts'; }
+        sudo pacman -S --noconfirm ${programa} 
+    fi
+
 }
 
 

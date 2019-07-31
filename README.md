@@ -32,7 +32,7 @@ Até o momento foram testadas e instaladas com sucesso as seguintes distribuiç�
 
 ---
 ### Dependências
-Para que tudo corra é necessário que o sudo esteja instalado e configurado corretamente.
+Para que tudo corra conforme programado, é necessário que o sudo esteja instalado e configurado corretamente.
 
 O script instala automaGicamente os pacotes 'wget', 'git', 'fontes powerline', 'zsh' e 'oh-my-zsh'.
 

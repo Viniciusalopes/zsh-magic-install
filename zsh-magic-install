@@ -23,10 +23,19 @@
 #--------VÁRIAVEIS------------------------------------------------------------->
 
 # Identifica a Distro
-distro=$(cat /etc/os-release | grep PRETTY | cut -d"\"" -f2)
+release='os-release'
+linha='PRETTY'
+
+if ! [[ -e /etc/os-release ]]; then
+    release='lsb-release'
+    linha='CODENAME'
+fi    
+
+distro=$(cat /etc/"${release}" | grep "${linha}" | cut -d"\"" -f2)
+
 
 # Distros testadas
-distros=('Ubuntu' 'KDE' 'Debian' 'Linux Mint' 'Fedora' 'Manjaro Linux' 'Slackware 14.2' )
+distros=('Ubuntu' 'KDE' 'Debian' 'Linux Mint' 'Fedora' 'Manjaro Linux' 'Slackware 14.2' 'Mazon OS')
 
 # Flag para continuar o script
 continua=0
@@ -114,7 +123,8 @@ instala()
         [[ "${programa}" == 'fonts-powerline' ]] && { programa='powerline-fonts'; }
         sudo pacman -S --noconfirm ${programa} 
     fi
-    if [[ "${distro}" == 'Slackware 14.2' ]]; then
+
+    if [[ "${distro}" == 'Slackware 14.2' ]] || [[ "${distro}" == 'Mazon OS' ]]; then
         if [[ "${programa}" == 'fonts-powerline' ]]; then
              # clone
              git clone https://github.com/powerline/fonts.git --depth=1
@@ -125,6 +135,15 @@ instala()
              cd ..
              rm -rf fonts
         fi
+    fi
+
+    if [[ "${distro}" == 'Mazon OS' ]] && [[ "${programa}" == 'zsh' ]]; then
+        #wget -O /tmp/zsh-5.7.1-1.mz http://mazonos.com/packages/extra/zsh-5.5.1-1.mz
+        wget -O /tmp/zsh-5.7.1-1.mz https://vovolinux.com.br/vovomazon/packages/var/lib/mzphp/unreleased/base/zsh-5.7.1-1.mz --no-check-certificate
+        sudo banana -i /tmp/zsh-5.7.1-1.mz
+        # Ajuste pós-instalação
+        chsh -s /bin/zsh
+        #sudo sed -i s"/$usuario:\/bin\/bash/$usuario:/\/bin\/zsh/"g /etc/passwd
     fi
 }
 
@@ -155,15 +174,18 @@ executa()
     echo -e "--> Obtendo usuários do sistema..."
     cat /etc/passwd | grep "/bin/bash" | grep "home" | cut -d: -f1 > lista_users
 
+
     if [[ "${usuario}" != 'root' ]]; then
         arquivo_zshrc="/home/${usuario}/.zshrc"
     fi
-    
+ 
+    rm -rfv lista_users    
     echo -e "--> Fazendo backup do .zshrc do usuário ${usuario}..."
     cp -v "${arquivo_zshrc}" "${arquivo_zshrc}"-bkp
     echo -e "--> Alterando o tema para agnoster..."
     sed -i 's/ZSH_THEME=\"robbyrussell/ZSH_THEME=\"agnoster/'g "${arquivo_zshrc}"
-    
+
+
     echo "${msg_final}"
     exit 0
 }
@@ -189,3 +211,4 @@ done
 
 # Programa começa aqui :)
 pergunta
+

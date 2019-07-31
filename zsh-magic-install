@@ -1,0 +1,166 @@
+#!/usr/bin/env bash
+#
+# Template orgulhosamente criado por (Shell-Base)
+#
+#-----------HEADER-------------------------------------------------------------|
+# AUTOR....: Vovolinux <suporte@vovolinux.com.br>
+# DATA.....: 31/07/2019 às 02:59 
+# PROGRAMA.: zsh-magic-install
+# VERSÃO...: 0.0.1
+# LICENÇA..: MIT
+# HOMEPAGE.: https://github.com/Viniciusalopes/zsh-magic-install
+# DESCRIÇÃO: Instalação automáGica do zsh, powerline-fonts e oh-my-zsh com tema
+#              Agnoster configurado.
+#
+#------------------------------------------------------------------------------|
+
+
+#--------CHANGELOG------------------------------------------------------------->
+# 
+#------------------------------------------------------------------------------|
+
+
+#--------VÁRIAVEIS------------------------------------------------------------->
+
+# Identifica a Distro
+distro=$(cat /etc/os-release | grep PRETTY | cut -d"\"" -f2 | cut -d' ' -f1)
+
+# Distros testadas
+distros=('Ubuntu')
+
+# Flag para continuar o script
+continua=0
+
+# Dependência necessária
+programa=''
+
+# Diretorio de trabalho
+temp_dir='/tmp/zsh-magic-install'
+
+# Mensagens
+msg_atencao='\n*******************************************************************************
+***************************     A T E N Ç Ã O !     ***************************
+*******************************************************************************\n'
+msg_inicius=' Opa! Belesma?
+ Este script vai instalar o zsh e o configurador oh-my-zsh, mudar o terminal 
+ padrão para zsh e setar o tema Agnoster para TODOS OS USUÁRIOS do computador.
+
+ A instalação depende de alguns programas como wget e git, que serão instalados
+ caso ainda não estejam no seu sistema.'
+
+msg_parar=' OK.\n Seu sistema não foi alterado.'
+
+msg_continuar=' Deseja continuar? [s/N]: '
+
+msg_final='------------------------------------------------------------------------------
+ Opa! Acho que correu tudo bem!
+ Abra o terminal novamente para ver se funcionou.
+ 
+ Até breve!
+ -----------------------------------
+ Vovolinux: Sem trauma e sem teoria!
+ -----------------------------------
+'
+
+#------------------------------------------------------------------------------>
+
+
+#--------FUNÇÕES--------------------------------------------------------------->
+
+
+# Pergunta inicial
+pergunta()
+{
+    echo -e "${msg_atencao}${msg_inicius}"
+    read -ep "${msg_continuar}" -n 1
+
+    case "$REPLY" in
+        s|S) executa ;;
+        *) echo -e "${msg_parar}"  ;;
+    esac
+    exit 0 
+}
+
+ver_dependencia()
+{
+    # Verifica se o wget está instalado
+    which ${programa}
+    if [[ $? -eq 0 ]]; then
+        echo -e "-> ${programa} está instalado."
+    else
+        echo -e "-> ${programa} não está instalado."
+        instala
+    fi
+}
+
+instala()
+{
+    #Ubuntu Studio
+    [[ "${distro}" == 'Ubuntu' ]] && apt install -y ${programa}
+}
+
+
+# Execução do script
+executa()
+{
+    echo -e "--> Verificando e instalando programas e fontes..."
+    programa='wget'
+    ver_dependencia
+    programa='git'
+    ver_dependencia
+    programa='zsh fonts-powerline'
+    instala
+    
+    echo -e "--> Obtendo o oh-my-zsh..."
+    sh -c "$(wget -O- https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+
+    echo -e "--> Fazendo backup do /etc/passwd..."
+    cp -v /etc/passwd /etc/passwd-bkp
+
+    echo -e "--> Fazendo backup do .zshrc do usuário root..."
+    cp -v ~/.zshrc ~/.zshrc-bkp
+    
+    echo -e "--> Obtendo usuários do sistema..."
+    cat /etc/passwd | grep "/bin/bash" | grep "home" | cut -d: -f1 > lista_users
+
+    for u in $(cat lista_users); do
+        echo -e "--> Fazendo backup do .zshrc do usuário ${u}..."
+        cp -v /home/${u}/.zshrc /home/${u}/.zshrc-bkp        
+    done
+
+    rm lista_users
+    
+    echo -e "--> Alterando o tema inicial para agnoster..."
+    sed -i 's/ZSH_THEME=\"robbyrussell/ZSH_THEME=\"agnoster/'g ~/.zshrc
+
+    echo -e "--> Alterando o shell padrão para zsh..."
+    sed -i s'/\/bin\/bash/\/bin\/zsh/'g /etc/passwd
+
+    echo "${msg_final}"
+    exit 0
+}
+
+
+#------------------------------------------------------------------------------>
+
+
+#------TESTES------------------------------------------------------------------>
+
+# Sem root não vai amiguinho. (tks SlackJeff)
+[[ "$UID" -ne '0' ]] && { echo "Execute como ROOT."; exit 1 ;}
+
+
+# Verifica se o script já foi testado na distro atual
+for d in "${distros[@]}"; do                     
+    if [[ "${d}" == ${distro} ]]; then
+        continua=1
+    fi
+done
+
+[[ $continua -eq 0 ]] && { echo -e "Este script ainda não foi testado com ${distro}."; exit 1;} 
+
+
+#------------------------------------------------------------------------------>
+
+# Programa começa aqui :)
+pergunta

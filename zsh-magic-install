@@ -64,7 +64,8 @@ msg_atencao='\n*****************************************************************
 *******************************************************************************\n'
 msg_inicius=' Opa! Belesma?
  Este script vai instalar o zsh e o configurador oh-my-zsh, mudar o terminal 
- padrão para zsh e setar o tema Agnoster para TODOS OS USUÁRIOS do computador.
+ padrão para zsh e setar o tema Agnoster para o usuário que estiver executando
+ o script.
 
  A instalação depende de alguns programas como wget e git, que serão
  instalados caso ainda não estejam no seu sistema.'

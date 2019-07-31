@@ -26,7 +26,7 @@
 distro=$(cat /etc/os-release | grep PRETTY | cut -d"\"" -f2 | cut -d' ' -f1)
 
 # Distros testadas
-distros=('Ubuntu')
+distros=('Ubuntu' 'KDE' 'Debian')
 
 # Flag para continuar o script
 continua=0
@@ -34,8 +34,11 @@ continua=0
 # Dependência necessária
 programa=''
 
-# Diretorio de trabalho
-temp_dir='/tmp/zsh-magic-install'
+# Nome do usuário
+usuario=$(whoami)
+
+# Arquivo .zshrc
+arquivo_zshrc="/${usuario}/.zshrc"
 
 # Mensagens
 msg_atencao='\n*******************************************************************************
@@ -45,8 +48,8 @@ msg_inicius=' Opa! Belesma?
  Este script vai instalar o zsh e o configurador oh-my-zsh, mudar o terminal 
  padrão para zsh e setar o tema Agnoster para TODOS OS USUÁRIOS do computador.
 
- A instalação depende de alguns programas como wget e git, que serão instalados
- caso ainda não estejam no seu sistema.'
+ A instalação depende de alguns programas como wget e git, que serão
+ instalados caso ainda não estejam no seu sistema.'
 
 msg_parar=' OK.\n Seu sistema não foi alterado.'
 
@@ -54,8 +57,8 @@ msg_continuar=' Deseja continuar? [s/N]: '
 
 msg_final='------------------------------------------------------------------------------
  Opa! Acho que correu tudo bem!
- Abra o terminal novamente para ver se funcionou.
- 
+ Reinicie a sessão para ver seu novo terminal!
+  
  Até breve!
  -----------------------------------
  Vovolinux: Sem trauma e sem teoria!
@@ -81,9 +84,9 @@ pergunta()
     exit 0 
 }
 
+# Verifica se o programa está instalado
 ver_dependencia()
 {
-    # Verifica se o wget está instalado
     which ${programa}
     if [[ $? -eq 0 ]]; then
         echo -e "-> ${programa} está instalado."
@@ -93,10 +96,14 @@ ver_dependencia()
     fi
 }
 
+# Define o gerenciador de pacotes da distro e instala o pacote
 instala()
 {
-    #Ubuntu Studio
-    [[ "${distro}" == 'Ubuntu' ]] && apt install -y ${programa}
+    if [[ "${distro}" == 'Ubuntu' ]] \
+    || [[ "${distro}" == 'KDE' ]] \
+    || [[ "${distro}" == 'Debian' ]]; then
+        sudo apt install -y ${programa}
+    fi
 }
 
 
@@ -112,30 +119,26 @@ executa()
     instala
     
     echo -e "--> Obtendo o oh-my-zsh..."
-    sh -c "$(wget -O- https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+    wget -O install.sh https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
+    sed -i s'/exec zsh -l/#####/'g install.sh
+    sh install.sh
+    rm -rfv install.sh
 
     echo -e "--> Fazendo backup do /etc/passwd..."
-    cp -v /etc/passwd /etc/passwd-bkp
+    sudo cp -v /etc/passwd /etc/passwd-bkp
 
-    echo -e "--> Fazendo backup do .zshrc do usuário root..."
-    cp -v ~/.zshrc ~/.zshrc-bkp
-    
     echo -e "--> Obtendo usuários do sistema..."
     cat /etc/passwd | grep "/bin/bash" | grep "home" | cut -d: -f1 > lista_users
 
-    for u in $(cat lista_users); do
-        echo -e "--> Fazendo backup do .zshrc do usuário ${u}..."
-        cp -v /home/${u}/.zshrc /home/${u}/.zshrc-bkp        
-    done
-
-    rm lista_users
+    if [[ "${usuario}" != 'root' ]]; then
+        arquivo_zshrc="/home/${usuario}/.zshrc"
+    fi
     
-    echo -e "--> Alterando o tema inicial para agnoster..."
-    sed -i 's/ZSH_THEME=\"robbyrussell/ZSH_THEME=\"agnoster/'g ~/.zshrc
-
-    echo -e "--> Alterando o shell padrão para zsh..."
-    sed -i s'/\/bin\/bash/\/bin\/zsh/'g /etc/passwd
-
+    echo -e "--> Fazendo backup do .zshrc do usuário ${usuario}..."
+    cp -v "${arquivo_zshrc}" "${arquivo_zshrc}"-bkp
+    echo -e "--> Alterando o tema para agnoster..."
+    sed -i 's/ZSH_THEME=\"robbyrussell/ZSH_THEME=\"agnoster/'g "${arquivo_zshrc}"
+    
     echo "${msg_final}"
     exit 0
 }
@@ -145,9 +148,6 @@ executa()
 
 
 #------TESTES------------------------------------------------------------------>
-
-# Sem root não vai amiguinho. (tks SlackJeff)
-[[ "$UID" -ne '0' ]] && { echo "Execute como ROOT."; exit 1 ;}
 
 
 # Verifica se o script já foi testado na distro atual

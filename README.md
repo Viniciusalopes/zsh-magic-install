@@ -113,11 +113,9 @@ Quando a instalação estiver concluída, basta reiniciar a sessão, que as conf
 
 ---
 ### Referências
----
 - powerline/fonts -> https://github.com/powerline/fonts
----
 - robbyrussell/oh-my-zsh -> https://github.com/robbyrussell/oh-my-zsh
----
 - plus.diolinux -> https://plus.diolinux.com.br/t/dica-como-instalar-o-zsh-oh-my-zsh-tema-agnoster-no-ubuntu-e-derivados/7321
+
 ---
 ---

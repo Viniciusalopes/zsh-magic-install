@@ -6,7 +6,7 @@
 # AUTOR....: Vovolinux <suporte@vovolinux.com.br>
 # DATA.....: 31/07/2019 às 02:59 
 # PROGRAMA.: zsh-magic-install
-# VERSÃO...: 0.0.1
+# VERSÃO...: 1.0.0
 # LICENÇA..: MIT
 # HOMEPAGE.: https://github.com/Viniciusalopes/zsh-magic-install
 # DESCRIÇÃO: Instalação automáGica do zsh, powerline-fonts e oh-my-zsh com tema
@@ -33,7 +33,6 @@ fi
 
 distro=$(cat /etc/"${release}" | grep "${linha}" | cut -d"\"" -f2)
 
-
 # Distros testadas
 distros=(
     'Ubuntu 19.04' 
@@ -58,6 +57,9 @@ usuario=$(whoami)
 # Arquivo .zshrc
 arquivo_zshrc="/${usuario}/.zshrc"
 
+# Linha para separa cada etapa da instalação na saída padrão
+separa='------------------------------------------------------------------------------'
+
 # Mensagens"
 msg_atencao='\n*******************************************************************************
 ***************************     A T E N Ç Ã O !     ***************************
@@ -74,7 +76,7 @@ msg_parar=' OK.\n Seu sistema não foi alterado.'
 
 msg_continuar=' Deseja continuar? [s/N]: '
 
-msg_final='------------------------------------------------------------------------------
+msg_final="${separa}
  Opa! Acho que correu tudo bem!
  Reinicie a sessão para ver seu novo terminal!
   
@@ -82,7 +84,7 @@ msg_final='---------------------------------------------------------------------
  -----------------------------------
  Vovolinux: Sem trauma e sem teoria!
  -----------------------------------
-'
+"
 
 #------------------------------------------------------------------------------>
 
@@ -108,9 +110,9 @@ ver_dependencia()
 {
     which ${programa}
     if [[ $? -eq 0 ]]; then
-        echo -e "-> ${programa} está instalado."
+        echo -e "${programa} está instalado."
     else
-        echo -e "-> ${programa} não está instalado."
+        echo -e "${programa} não está instalado."
         instala
     fi
 }
@@ -118,6 +120,7 @@ ver_dependencia()
 # Define o gerenciador de pacotes da distro e instala o(s) pacote(s)
 instala()
 {
+    echo -e"${separa}\n"
     if [[ "${distro}" == 'Ubuntu 19.04' ]] \
     || [[ "${distro}" == 'KDE neon User Edition 5.16' ]] \
     || [[ "${distro}" == 'Debian GNU/Linux 9 (stretch)' ]] \
@@ -137,19 +140,21 @@ instala()
 
     if [[ "${distro}" == 'Slackware 14.2' ]] || [[ "${distro}" == 'Mazon OS' ]]; then
         if [[ "${programa}" == 'fonts-powerline' ]]; then
-             # Instala as fontes para distros que não possuem pacotes prontos
-             # clone
-             git clone https://github.com/powerline/fonts.git --depth=1
-             # install
-             cd fonts
-             ./install.sh
-             # clean-up a bit
-             cd ..
-             rm -rf fonts
+            echo -e"${separa}\n"
+            # Instala as fontes para distros que não possuem pacotes prontos
+            # clone
+            git clone https://github.com/powerline/fonts.git --depth=1
+            # install
+            cd fonts
+            ./install.sh
+            # clean-up a bit
+            cd ..
+            rm -rf fonts
         fi
     fi
 
     if [[ "${distro}" == 'Mazon OS' ]] && [[ "${programa}" == 'zsh' ]]; then
+        echo -e"${separa}\n"
         wget -O /tmp/zsh-5.7.1-1.mz \
         https://vovolinux.com.br/vovomazon/packages/var/lib/mzphp/unreleased/base/zsh-5.7.1-1.mz \
         --no-check-certificate
@@ -162,7 +167,7 @@ instala()
 # Execução do script
 executa()
 {
-    echo -e "--> Verificando e instalando programas e fontes..."
+    echo -e "${separa}\nVerificando e instalando programas e fontes..."
     programa='wget'
     ver_dependencia
     programa='git'
@@ -173,18 +178,20 @@ executa()
     instala
     
     # Altera o shell de bash para zsh
+    echo -e"${separa}\n"
     chsh -s /bin/zsh
     
-    echo -e "--> Obtendo o oh-my-zsh..."
+    echo -e "${separa}\nObtendo o oh-my-zsh..."
     wget -O install.sh https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
     sed -i s'/exec zsh -l/#####/'g install.sh
+    echo -e"${separa}\n"
     sh install.sh
     rm -rfv install.sh
 
-    echo -e "--> Fazendo backup do /etc/passwd..."
+    echo -e "${separa}\nFazendo backup do /etc/passwd..."
     sudo cp -v /etc/passwd /etc/passwd-bkp
 
-    echo -e "--> Obtendo usuários do sistema..."
+    echo -e "${separa}\nObtendo usuários do sistema..."
     cat /etc/passwd | grep "/bin/bash" | grep "home" | cut -d: -f1 > lista_users
 
 
@@ -194,9 +201,9 @@ executa()
  
     rm -rfv lista_users
         
-    echo -e "--> Fazendo backup do .zshrc do usuário ${usuario}..."
+    echo -e "${separa}\nFazendo backup do .zshrc do usuário ${usuario}..."
     cp -v "${arquivo_zshrc}" "${arquivo_zshrc}"-bkp
-    echo -e "--> Alterando o tema para agnoster..."
+    echo -e "${separa}\nAlterando o tema para agnoster..."
     sed -i 's/ZSH_THEME=\"robbyrussell/ZSH_THEME=\"agnoster/'g "${arquivo_zshrc}"
 
 

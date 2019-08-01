@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+git config --global user.name "viniciusalopes"
+git config --global user.email "suporte@viniciusalopes.com.br"
+git pull

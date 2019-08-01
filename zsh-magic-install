@@ -118,15 +118,6 @@ ver_dependencia()
 # Define o gerenciador de pacotes da distro e instala o(s) pacote(s)
 instala()
 {
-    'Ubuntu 19.04' 
-    'KDE neon User Edition 5.16' 
-    'Debian GNU/Linux 9 (stretch)' 
-    'Linux Mint 19.1' 
-    'Fedora 30 (Thirty)' 
-    'Manjaro Linux' 
-    'Slackware 14.2'
-    'Mazon OS'
-
     if [[ "${distro}" == 'Ubuntu 19.04' ]] \
     || [[ "${distro}" == 'KDE neon User Edition 5.16' ]] \
     || [[ "${distro}" == 'Debian GNU/Linux 9 (stretch)' ]] \

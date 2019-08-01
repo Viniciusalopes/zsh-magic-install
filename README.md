@@ -118,4 +118,3 @@ Quando a instalação estiver concluída, basta reiniciar a sessão, que as conf
 - plus.diolinux -> https://plus.diolinux.com.br/t/dica-como-instalar-o-zsh-oh-my-zsh-tema-agnoster-no-ubuntu-e-derivados/7321
 
 ---
----

@@ -27,6 +27,7 @@ Até o momento foram testadas e instaladas com sucesso as seguintes distribuiç�
 - Debian GNU/Linux 9 (stretch) - Mate
 - Linux Mint 19.1 - Cinnamon
 - Manjaro Linux 18.0 Illyria - XFCE
+- Xubuntu 18.04.3 LTS - XFCE
 
 (Imagens de todas essas distros no final deste arquivo README)
 
@@ -109,6 +110,10 @@ Quando a instalação estiver concluída, basta reiniciar a sessão, que as conf
 
 ### Manjaro Linux 18.0 Illyria - XFCE
 ![terminal-manjaro-illyria-18-0-4-xfce.png](https://raw.githubusercontent.com/Viniciusalopes/zsh-magic-install/master/imagens/terminal-manjaro-illyria-18-0-4-xfce.png)
+
+### Xubuntu 18.04.3 LTS - XFCE
+![terminal-xubuntu-18-04-3-LTS.png](https://raw.githubusercontent.com/Viniciusalopes/zsh-magic-install/master/imagens/terminal-xubuntu-18-04-3-LTS.png)
+
 
 
 ---

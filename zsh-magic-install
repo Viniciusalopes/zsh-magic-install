@@ -6,7 +6,7 @@
 # AUTOR....: Vovolinux <suporte@vovolinux.com.br>
 # DATA.....: 31/07/2019 às 02:59 
 # PROGRAMA.: zsh-magic-install
-# VERSÃO...: 1.0.0
+# VERSÃO...: 1.0.1
 # LICENÇA..: MIT
 # HOMEPAGE.: https://github.com/Viniciusalopes/zsh-magic-install
 # DESCRIÇÃO: Instalação automáGica do zsh, powerline-fonts e oh-my-zsh com tema
@@ -16,7 +16,9 @@
 
 
 #--------CHANGELOG------------------------------------------------------------->
-# 
+# 2019-08-17 [v1.0.1] - Exibe o nome do usuário antes da instalação
+#                     - Corrigida a exibição da linha de separação
+#                     - Testado com Ubuntu 18.04.3 LTS
 #------------------------------------------------------------------------------|
 
 
@@ -35,6 +37,7 @@ distro=$(cat /etc/"${release}" | grep "${linha}" | cut -d"\"" -f2)
 
 # Distros testadas
 distros=(
+    'Ubuntu 18.04.3 LTS' 
     'Ubuntu 19.04' 
     'KDE neon User Edition 5.16' 
     'Debian GNU/Linux 9 (stretch)' 
@@ -67,7 +70,7 @@ msg_atencao='\n*****************************************************************
 msg_inicius=' Opa! Belesma?
  Este script vai instalar o zsh e o configurador oh-my-zsh, mudar o terminal 
  padrão para zsh e setar o tema Agnoster para o usuário que estiver executando
- o script.
+ o script, neste caso, para o usuario \' ${usuario} \'.
 
  A instalação depende de alguns programas como wget e git, que serão
  instalados caso ainda não estejam no seu sistema.'
@@ -121,7 +124,8 @@ ver_dependencia()
 instala()
 {
     echo -e"${separa}\n"
-    if [[ "${distro}" == 'Ubuntu 19.04' ]] \
+    if [[ "${distro}" == 'Ubuntu 18.04.3 LTS' ]] \
+    || [[ "${distro}" == 'Ubuntu 19.04' ]] \
     || [[ "${distro}" == 'KDE neon User Edition 5.16' ]] \
     || [[ "${distro}" == 'Debian GNU/Linux 9 (stretch)' ]] \
     || [[ "${distro}" == 'Linux Mint 19.1' ]]; then
@@ -140,7 +144,7 @@ instala()
 
     if [[ "${distro}" == 'Slackware 14.2' ]] || [[ "${distro}" == 'Mazon OS' ]]; then
         if [[ "${programa}" == 'fonts-powerline' ]]; then
-            echo -e"${separa}\n"
+            echo -e "${separa}\n"
             # Instala as fontes para distros que não possuem pacotes prontos
             # clone
             git clone https://github.com/powerline/fonts.git --depth=1
@@ -154,7 +158,7 @@ instala()
     fi
 
     if [[ "${distro}" == 'Mazon OS' ]] && [[ "${programa}" == 'zsh' ]]; then
-        echo -e"${separa}\n"
+        echo -e "${separa}\n"
         wget -O /tmp/zsh-5.7.1-1.mz \
         https://vovolinux.com.br/vovomazon/packages/var/lib/mzphp/unreleased/base/zsh-5.7.1-1.mz \
         --no-check-certificate
@@ -178,13 +182,13 @@ executa()
     instala
     
     # Altera o shell de bash para zsh
-    echo -e"${separa}\n"
+    echo -e "${separa}\n"
     chsh -s /bin/zsh
     
     echo -e "${separa}\nObtendo o oh-my-zsh..."
     wget -O install.sh https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
     sed -i s'/exec zsh -l/#####/'g install.sh
-    echo -e"${separa}\n"
+    echo -e "${separa}\n"
     sh install.sh
     rm -rfv install.sh
 

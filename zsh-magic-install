@@ -42,6 +42,7 @@ distros=(
     'KDE neon User Edition 5.16' 
     'Debian GNU/Linux 9 (stretch)' 
     'Linux Mint 19.1' 
+    'Linux Mint 19.2' 
     'Fedora 30 (Thirty)' 
     'Manjaro Linux' 
     'Slackware 14.2'
@@ -128,6 +129,7 @@ instala()
     || [[ "${distro}" == 'Ubuntu 19.04' ]] \
     || [[ "${distro}" == 'KDE neon User Edition 5.16' ]] \
     || [[ "${distro}" == 'Debian GNU/Linux 9 (stretch)' ]] \
+    || [[ "${distro}" == 'Linux Mint 19.2' ]] \
     || [[ "${distro}" == 'Linux Mint 19.1' ]]; then
         sudo apt install -y ${programa}
     fi

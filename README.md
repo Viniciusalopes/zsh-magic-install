@@ -26,6 +26,7 @@ Até o momento foram testadas e instaladas com sucesso as seguintes distribuiç�
 - KDE neon User Edition 5.16
 - Debian GNU/Linux 9 (stretch) - Mate
 - Linux Mint 19.1 - Cinnamon
+- Linux Mint 19.2 - Cinnamon
 - Manjaro Linux 18.0 Illyria - XFCE
 - Xubuntu 18.04.3 LTS - XFCE
 

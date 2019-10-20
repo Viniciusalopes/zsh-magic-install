@@ -38,7 +38,8 @@ distro=$(cat /etc/"${release}" | grep "${linha}" | cut -d"\"" -f2)
 # Distros testadas
 distros=(
     'Ubuntu 18.04.3 LTS' 
-    'Ubuntu 19.04' 
+    'Ubuntu 19.04'
+    'Ubuntu 19.10' 
     'KDE neon User Edition 5.16' 
     'Debian GNU/Linux 9 (stretch)' 
     'Linux Mint 19.1' 
@@ -127,6 +128,7 @@ instala()
     echo -e"${separa}\n"
     if [[ "${distro}" == 'Ubuntu 18.04.3 LTS' ]] \
     || [[ "${distro}" == 'Ubuntu 19.04' ]] \
+    || [[ "${distro}" == 'Ubuntu 19.10' ]] \
     || [[ "${distro}" == 'KDE neon User Edition 5.16' ]] \
     || [[ "${distro}" == 'Debian GNU/Linux 9 (stretch)' ]] \
     || [[ "${distro}" == 'Linux Mint 19.2' ]] \

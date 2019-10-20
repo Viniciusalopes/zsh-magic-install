@@ -69,13 +69,13 @@ separa='------------------------------------------------------------------------
 msg_atencao='\n*******************************************************************************
 ***************************     A T E N Ç Ã O !     ***************************
 *******************************************************************************\n'
-msg_inicius=' Opa! Belesma?
+msg_inicius=" Opa! Belesma?
  Este script vai instalar o zsh e o configurador oh-my-zsh, mudar o terminal 
  padrão para zsh e setar o tema Agnoster para o usuário que estiver executando
  o script, neste caso, para o usuario ${usuario} .
 
  A instalação depende de alguns programas como wget e git, que serão
- instalados caso ainda não estejam no seu sistema.'
+ instalados caso ainda não estejam no seu sistema."
 
 msg_parar=' OK.\n Seu sistema não foi alterado.'
 

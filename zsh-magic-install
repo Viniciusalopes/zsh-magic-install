@@ -6,7 +6,7 @@
 # AUTOR....: Vovolinux <suporte@vovolinux.com.br>
 # DATA.....: 31/07/2019 às 02:59 
 # PROGRAMA.: zsh-magic-install
-# VERSÃO...: 1.0.1
+# VERSÃO...: 1.0.2
 # LICENÇA..: MIT
 # HOMEPAGE.: https://github.com/Viniciusalopes/zsh-magic-install
 # DESCRIÇÃO: Instalação automáGica do zsh, powerline-fonts e oh-my-zsh com tema
@@ -16,9 +16,17 @@
 
 
 #--------CHANGELOG------------------------------------------------------------->
+# 2019-12-12 [v1.0.2] - Testado com Zorin OS 15.1
+#
 # 2019-08-17 [v1.0.1] - Exibe o nome do usuário antes da instalação
 #                     - Corrigida a exibição da linha de separação
 #                     - Testado com Xubuntu 18.04.3 LTS
+#------------------------------------------------------------------------------|
+
+#--------BUGS------------------------------------------------------------------>
+# 2019-12-12 [v1.0.2] - Zorin OS 15.1 - Fontes powerline não ficaram corretas 
+#                       no tema Agnoster.
+#
 #------------------------------------------------------------------------------|
 
 
@@ -48,6 +56,7 @@ distros=(
     'Manjaro Linux' 
     'Slackware 14.2'
     'Mazon OS'
+    'Zorin OS 15.1'
     )
 
 # Flag para continuar o script
@@ -72,7 +81,7 @@ msg_atencao='\n*****************************************************************
 msg_inicius=" Opa! Belesma?
  Este script vai instalar o zsh e o configurador oh-my-zsh, mudar o terminal 
  padrão para zsh e setar o tema Agnoster para o usuário que estiver executando
- o script, neste caso, para o usuario ${usuario} .
+ o script, neste caso, para o usuário ${usuario}.
 
  A instalação depende de alguns programas como wget e git, que serão
  instalados caso ainda não estejam no seu sistema."
@@ -125,14 +134,15 @@ ver_dependencia()
 # Define o gerenciador de pacotes da distro e instala o(s) pacote(s)
 instala()
 {
-    echo -e"${separa}\n"
+    echo -e "${separa}\n"
     if [[ "${distro}" == 'Ubuntu 18.04.3 LTS' ]] \
     || [[ "${distro}" == 'Ubuntu 19.04' ]] \
     || [[ "${distro}" == 'Ubuntu 19.10' ]] \
     || [[ "${distro}" == 'KDE neon User Edition 5.16' ]] \
     || [[ "${distro}" == 'Debian GNU/Linux 9 (stretch)' ]] \
     || [[ "${distro}" == 'Linux Mint 19.2' ]] \
-    || [[ "${distro}" == 'Linux Mint 19.1' ]]; then
+    || [[ "${distro}" == 'Linux Mint 19.1' ]] \
+    || [[ "${distro}" == 'Zorin OS 15.1' ]] ; then
         sudo apt install -y ${programa}
     fi
 
@@ -240,4 +250,3 @@ done
 
 # Programa começa aqui :)
 pergunta
-

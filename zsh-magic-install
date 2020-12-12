@@ -6,7 +6,7 @@
 # AUTOR....: Vovolinux <suporte@vovolinux.com.br>
 # DATA.....: 31/07/2019 às 02:59 
 # PROGRAMA.: zsh-magic-install
-# VERSÃO...: 1.0.2
+# VERSÃO...: 1.0.3
 # LICENÇA..: MIT
 # HOMEPAGE.: https://github.com/Viniciusalopes/zsh-magic-install
 # DESCRIÇÃO: Instalação automáGica do zsh, powerline-fonts e oh-my-zsh com tema
@@ -16,6 +16,8 @@
 
 
 #--------CHANGELOG------------------------------------------------------------->
+# 2020-12-11 [v1.0.3] - Testado com 'Linux Mint 20'.
+#
 # 2019-12-12 [v1.0.2] - Testado com Zorin OS 15.1
 #
 # 2019-08-17 [v1.0.1] - Exibe o nome do usuário antes da instalação
@@ -45,9 +47,13 @@ distro=$(cat /etc/"${release}" | grep "${linha}" | cut -d"\"" -f2)
 
 # Distros testadas
 distros=(
+    'Ubuntu 20.10'
+    'Ubuntu 20.04'
     'Ubuntu 18.04.3 LTS' 
     'Ubuntu 19.04'
     'Ubuntu 19.10' 
+    'Linux Mint 20'
+    'KDE neon User Edition 5.19'
     'KDE neon User Edition 5.16' 
     'Debian GNU/Linux 9 (stretch)' 
     'Linux Mint 19.1' 
@@ -142,6 +148,7 @@ instala()
     || [[ "${distro}" == 'Debian GNU/Linux 9 (stretch)' ]] \
     || [[ "${distro}" == 'Linux Mint 19.2' ]] \
     || [[ "${distro}" == 'Linux Mint 19.1' ]] \
+    || [[ "${distro}" == 'Linux Mint 20' ]] \
     || [[ "${distro}" == 'Zorin OS 15.1' ]] ; then
         sudo apt install -y ${programa}
     fi

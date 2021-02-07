@@ -61,7 +61,9 @@ distros=(
     'KDE neon User Edition 5.16' 
     'Debian GNU/Linux 9 (stretch)' 
     'Linux Mint 19.1' 
-    'Linux Mint 19.2' 
+    'Linux Mint 19.2'
+    'Linux Mint 20'
+    'Linux Mint 20.1'
     'Fedora 30 (Thirty)' 
     'Manjaro Linux' 
     'Slackware 14.2'
@@ -156,6 +158,7 @@ instala()
     || [[ "${distro}" == 'Linux Mint 19.2' ]] \
     || [[ "${distro}" == 'Linux Mint 19.1' ]] \
     || [[ "${distro}" == 'Linux Mint 20' ]] \
+    || [[ "${distro}" == 'Linux Mint 20.1' ]] \
     || [[ "${distro}" == 'Zorin OS 15.1' ]] ; then
         sudo apt install -y ${programa}
     fi

@@ -6,7 +6,7 @@
 # AUTOR....: Vovolinux <suporte@vovolinux.com.br>
 # DATA.....: 31/07/2019 às 02:59 
 # PROGRAMA.: zsh-magic-install
-# VERSÃO...: 1.0.2
+# VERSÃO...: 1.0.4
 # LICENÇA..: MIT
 # HOMEPAGE.: https://github.com/Viniciusalopes/zsh-magic-install
 # DESCRIÇÃO: Instalação automáGica do zsh, powerline-fonts e oh-my-zsh com tema
@@ -16,6 +16,13 @@
 
 
 #--------CHANGELOG------------------------------------------------------------->
+# 2021-02-22 [v1.0.5] - Testado com 'Ubuntu 20.04.2 LTS'
+#
+# 2020-12-24 [v1.0.4] - Testado com 'Ubuntu 20.04.1 LTS';
+#                       Correções para 'Ubuntu 20.04'.
+#
+# 2020-12-11 [v1.0.3] - Testado com 'Linux Mint 20'.
+#
 # 2019-12-12 [v1.0.2] - Testado com Zorin OS 15.1
 #
 # 2019-08-17 [v1.0.1] - Exibe o nome do usuário antes da instalação
@@ -46,15 +53,19 @@ distro=$(cat /etc/"${release}" | grep "${linha}" | cut -d"\"" -f2)
 # Distros testadas
 distros=(
     'Ubuntu 20.10'
+    'Ubuntu 20.04.1 LTS'
+    'Ubuntu 20.04.2 LTS'
     'Ubuntu 20.04'
-    'Ubuntu 18.04.3 LTS' 
     'Ubuntu 19.04'
     'Ubuntu 19.10' 
+    'Linux Mint 20'
     'KDE neon User Edition 5.19'
     'KDE neon User Edition 5.16' 
     'Debian GNU/Linux 9 (stretch)' 
     'Linux Mint 19.1' 
-    'Linux Mint 19.2' 
+    'Linux Mint 19.2'
+    'Linux Mint 20'
+    'Linux Mint 20.1'
     'Fedora 30 (Thirty)' 
     'Manjaro Linux' 
     'Slackware 14.2'
@@ -138,13 +149,19 @@ ver_dependencia()
 instala()
 {
     echo -e "${separa}\n"
-    if [[ "${distro}" == 'Ubuntu 18.04.3 LTS' ]] \
+    if [[ "${distro}" == 'Ubuntu 20.10' ]] \
+    || [[ "${distro}" == 'Ubuntu 20.04.2 LTS' ]] \
+    || [[ "${distro}" == 'Ubuntu 20.04.1 LTS' ]] \
+    || [[ "${distro}" == 'Ubuntu 20.04' ]] \
+    || [[ "${distro}" == 'Ubuntu 18.04.3 LTS' ]] \
     || [[ "${distro}" == 'Ubuntu 19.04' ]] \
     || [[ "${distro}" == 'Ubuntu 19.10' ]] \
     || [[ "${distro}" == 'KDE neon User Edition 5.16' ]] \
     || [[ "${distro}" == 'Debian GNU/Linux 9 (stretch)' ]] \
     || [[ "${distro}" == 'Linux Mint 19.2' ]] \
     || [[ "${distro}" == 'Linux Mint 19.1' ]] \
+    || [[ "${distro}" == 'Linux Mint 20' ]] \
+    || [[ "${distro}" == 'Linux Mint 20.1' ]] \
     || [[ "${distro}" == 'Zorin OS 15.1' ]] ; then
         sudo apt install -y ${programa}
     fi

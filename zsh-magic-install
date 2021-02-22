@@ -45,9 +45,12 @@ distro=$(cat /etc/"${release}" | grep "${linha}" | cut -d"\"" -f2)
 
 # Distros testadas
 distros=(
+    'Ubuntu 20.10'
+    'Ubuntu 20.04'
     'Ubuntu 18.04.3 LTS' 
     'Ubuntu 19.04'
     'Ubuntu 19.10' 
+    'KDE neon User Edition 5.19'
     'KDE neon User Edition 5.16' 
     'Debian GNU/Linux 9 (stretch)' 
     'Linux Mint 19.1' 

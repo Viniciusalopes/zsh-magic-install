@@ -1,9 +1,9 @@
 # zsh-magic-install
-Script para instalar o zsh, powerline-fonts e oh-my-zsh com tema Agnoster configurado, automaGicamente.
+Script para instalar o zsh, powerline-fonts e oh-my-zsh com tema Fino configurado, automaGicamente.
 
 ### Finalidade
 Este script vai instalar o zsh e o configurador oh-my-zsh, mudar o terminal 
-padrão para zsh e setar o tema Agnoster para o usuário que estiver executando
+padrão para zsh e setar o tema Fino para o usuário que estiver executando
 o script.
 
 A instalação depende de alguns programas como wget e git, que serão
@@ -79,7 +79,7 @@ Para continuar basta confirmar com Y ou S dependendo do programa que estiver sol
 E seja feliz!
 ---
 
-Quando a instalação estiver concluída, basta reiniciar a sessão, que as configurações do zsh com o tema Agnoster já estarão prontas.
+Quando a instalação estiver concluída, basta reiniciar a sessão, que as configurações do zsh com o tema Fino já estarão prontas.
 
 ---
 

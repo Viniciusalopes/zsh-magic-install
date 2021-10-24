@@ -6,7 +6,7 @@
 # AUTOR....: Vovolinux <suporte@vovolinux.com.br>
 # DATA.....: 31/07/2019 às 02:59 
 # PROGRAMA.: zsh-magic-install
-# VERSÃO...: 1.0.4
+# VERSÃO...: 1.0.7
 # LICENÇA..: MIT
 # HOMEPAGE.: https://github.com/Viniciusalopes/zsh-magic-install
 # DESCRIÇÃO: Instalação automáGica do zsh, powerline-fonts e oh-my-zsh com tema
@@ -16,6 +16,10 @@
 
 
 #--------CHANGELOG------------------------------------------------------------->
+# 2021-10-24 [v1.0.7] - Testado com 'Ubuntu Studio 21.10'
+#
+# 2021-08-17 [v1.0.6] - Testado com 'Linux Mint 20.2'
+#
 # 2021-02-22 [v1.0.5] - Testado com 'Ubuntu 20.04.2 LTS'
 #
 # 2020-12-24 [v1.0.4] - Testado com 'Ubuntu 20.04.1 LTS';
@@ -52,6 +56,8 @@ distro=$(cat /etc/"${release}" | grep "${linha}" | cut -d"\"" -f2)
 
 # Distros testadas
 distros=(
+    'Ubuntu 21.10'
+    'Linux Mint 20.2'
     'Ubuntu 21.04'
     'Ubuntu 20.10'
     'Ubuntu 20.04.1 LTS'
@@ -150,7 +156,9 @@ ver_dependencia()
 instala()
 {
     echo -e "${separa}\n"
-    if [[ "${distro}" == 'Ubuntu 21.04' ]] \
+    if [[ "${distro}" == 'Ubuntu 21.10' ]] \
+    || [[ "${distro}" == 'Linux Mint 20.2' ]] \
+    || [[ "${distro}" == 'Ubuntu 21.04' ]] \
     || [[ "${distro}" == 'Ubuntu 20.10' ]] \
     || [[ "${distro}" == 'Ubuntu 20.04.2 LTS' ]] \
     || [[ "${distro}" == 'Ubuntu 20.04.1 LTS' ]] \
@@ -243,8 +251,8 @@ executa()
         
     echo -e "${separa}\nFazendo backup do .zshrc do usuário ${usuario}..."
     cp -v "${arquivo_zshrc}" "${arquivo_zshrc}"-bkp
-    echo -e "${separa}\nAlterando o tema para agnoster..."
-    sed -i 's/ZSH_THEME=\"robbyrussell/ZSH_THEME=\"agnoster/'g "${arquivo_zshrc}"
+    echo -e "${separa}\nAlterando o tema para fino..."
+    sed -i 's/ZSH_THEME=\"robbyrussell/ZSH_THEME=\"fino/'g "${arquivo_zshrc}"
 
 
     echo "${msg_final}"

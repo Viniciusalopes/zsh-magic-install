@@ -314,7 +314,7 @@ executa() {
     echo -e "${separa}\nObtendo o oh-my-zsh..."
     wget -O install.sh https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
     #sed -i s'/exec zsh -l/#####/'g install.sh
-    exit 0
+    
     sh install.sh
     rm -rfv install.sh
 

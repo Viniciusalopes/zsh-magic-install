@@ -124,10 +124,6 @@ array_contem() {
 # $2 = Palavra(s)
 # Retorno: 0 = contém; 1 = não contém
 texto_contem() {
-<<<<<<< HEAD
-
-=======
->>>>>>> 83f93089c5a978f4ea2fbadec3df7b0443e9cc28
     if [[ $(echo -e "${1}" | grep -c "${2}") = 0 ]]; then
         return 1
     fi

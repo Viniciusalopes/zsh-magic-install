@@ -313,7 +313,7 @@ executa() {
 
     echo -e "${separa}\nObtendo o oh-my-zsh..."
     wget -O install.sh https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
-    #sed -i s'/exec zsh -l/#####/'g install.sh
+    sed -i s'/exec zsh -l/#####/'g install.sh
     
     sh install.sh
     rm -rfv install.sh
@@ -373,7 +373,7 @@ if [[ $continua -eq 1 ]]; then
     printf %b " >> Este script ainda não foi testado com ${distro}.\n"
     if ! pergunta_sn " Deseja continuar mesmo assim? [s/N]"; then
         echo -e "${msg_parar}"
-        exit 1
+         1
     fi
 fi
 

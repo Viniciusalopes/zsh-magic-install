@@ -85,6 +85,18 @@ Quando a instalação estiver concluída, basta reiniciar a sessão, que as conf
 
 ## IMAGENS
 
+### Alterações recentes
+![zsh-magic-install-header-script](https://raw.githubusercontent.com/Viniciusalopes/zsh-magic-install/master/imagens/2022-02-05_05-21-zsh-magic-install-header-script.png)
+
+### Saída 1 de instalação normal
+![zsh-magic-install-screen1](https://raw.githubusercontent.com/Viniciusalopes/zsh-magic-install/master/imagens/2022-02-05_05-21-zsh-magic-install-screen1.png)
+
+### Saída 2 de instalação normal
+![zsh-magic-install-screen2](https://raw.githubusercontent.com/Viniciusalopes/zsh-magic-install/master/imagens/2022-02-05_05-21-zsh-magic-install-screen2.png)
+
+### Debian GNU/Linux 11 (bullseye)
+  ![zsh-magic-install-installed-in-debian-11](https://raw.githubusercontent.com/Viniciusalopes/zsh-magic-install/master/imagens/2022-02-05_05-21-zsh-magic-install-installed-in-debian-11.png)
+
 ### Mazon OS 1.4.3-beta - XFCE
 ![terminal-mazonos-1-4-3.png](https://raw.githubusercontent.com/Viniciusalopes/zsh-magic-install/master/imagens/terminal-mazonos-1-4-3.png)
 

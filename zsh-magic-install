@@ -4,18 +4,22 @@
 #
 #-----------HEADER-------------------------------------------------------------|
 # AUTOR....: Vovolinux <suporte@vovolinux.com.br>
-# DATA.....: 31/07/2019 às 02:59 
+# DATA.....: 31/07/2019 às 02:59
 # PROGRAMA.: zsh-magic-install
-# VERSÃO...: 1.0.7
+# VERSÃO...: 1.0.8
 # LICENÇA..: MIT
 # HOMEPAGE.: https://github.com/Viniciusalopes/zsh-magic-install
 # DESCRIÇÃO: Instalação automáGica do zsh, powerline-fonts e oh-my-zsh com tema
-#              Agnoster configurado.
+#              Fino configurado.
 #
 #------------------------------------------------------------------------------|
 
-
 #--------CHANGELOG------------------------------------------------------------->
+# 2022-02-05 [v1.0.8] - Incluída a opção de continuar mesmo que este script
+#                       ainda não tenha sido testado com a distribuição atual;
+#                     - Verificação de distros testadas alterada para like as;
+#                     - Testado com 'Debian GNU/Linux 11 (bullseye)'.
+#
 # 2021-10-24 [v1.0.7] - Testado com 'Ubuntu Studio 21.10'
 #
 # 2021-08-17 [v1.0.6] - Testado com 'Linux Mint 20.2'
@@ -35,13 +39,16 @@
 #------------------------------------------------------------------------------|
 
 #--------BUGS------------------------------------------------------------------>
-# 2019-12-12 [v1.0.2] - Zorin OS 15.1 - Fontes powerline não ficaram corretas 
+# 2019-12-12 [v1.0.2] - Zorin OS 15.1 - Fontes powerline não ficaram corretas
 #                       no tema Agnoster.
 #
 #------------------------------------------------------------------------------|
 
-
 #--------VÁRIAVEIS------------------------------------------------------------->
+
+# Array de opções para busca em 'array_contem()'
+# $array() deve ser atribuído antes pelo chamador, de forma global
+array=()
 
 # Identifica a Distro
 release='os-release'
@@ -50,35 +57,35 @@ linha='PRETTY'
 if ! [[ -e /etc/os-release ]]; then
     release='lsb-release'
     linha='CODENAME'
-fi    
+fi
 
 distro=$(cat /etc/"${release}" | grep "${linha}" | cut -d"\"" -f2)
 
 # Distros testadas
-distros=(
-    'Ubuntu 21.10'
-    'Linux Mint 20.2'
-    'Ubuntu 21.04'
-    'Ubuntu 20.10'
-    'Ubuntu 20.04.1 LTS'
-    'Ubuntu 20.04.2 LTS'
-    'Ubuntu 20.04'
-    'Ubuntu 19.04'
-    'Ubuntu 19.10' 
-    'Linux Mint 20'
-    'KDE neon User Edition 5.19'
-    'KDE neon User Edition 5.16' 
-    'Debian GNU/Linux 9 (stretch)' 
-    'Linux Mint 19.1' 
-    'Linux Mint 19.2'
-    'Linux Mint 20'
-    'Linux Mint 20.1'
-    'Fedora 30 (Thirty)' 
-    'Manjaro Linux' 
-    'Slackware 14.2'
-    'Mazon OS'
-    'Zorin OS 15.1'
-    )
+# distros=(
+#     'Ubuntu 21.10'
+#     'Linux Mint 20.2'
+#     'Ubuntu 21.04'
+#     'Ubuntu 20.10'
+#     'Ubuntu 20.04.1 LTS'
+#     'Ubuntu 20.04.2 LTS'
+#     'Ubuntu 20.04'
+#     'Ubuntu 19.04'
+#     'Ubuntu 19.10'
+#     'Linux Mint 20'
+#     'KDE neon User Edition 5.19'
+#     'KDE neon User Edition 5.16'
+#     'Debian GNU/Linux 9 (stretch)'
+#     'Linux Mint 19.1'
+#     'Linux Mint 19.2'
+#     'Linux Mint 20'
+#     'Linux Mint 20.1'
+#     'Fedora 30 (Thirty)'
+#     'Manjaro Linux'
+#     'Slackware 14.2'
+#     'Mazon OS'
+#     'Zorin OS 15.1'
+# )
 
 # Flag para continuar o script
 continua=0
@@ -101,7 +108,7 @@ msg_atencao='\n*****************************************************************
 *******************************************************************************\n'
 msg_inicius=" Opa! Belesma?
  Este script vai instalar o zsh e o configurador oh-my-zsh, mudar o terminal 
- padrão para zsh e setar o tema Agnoster para o usuário que estiver executando
+ padrão para zsh e setar o tema Fino para o usuário que estiver executando
  o script, neste caso, para o usuário ${usuario}.
 
  A instalação depende de alguns programas como wget e git, que serão
@@ -123,26 +130,128 @@ msg_final="${separa}
 
 #------------------------------------------------------------------------------>
 
-
 #--------FUNÇÕES--------------------------------------------------------------->
 
+# Verifica se o array contém o texto procurado
+# $array() deve ser atribuído antes pelo chamador, de forma global
+# $1 = Texto procurado
+# Retorno: 0 = encontrou; 1 = não econtrou
+array_contem() {
+    for a in "${array[@]}"; do
+        if [[ "${a}" = "$1" ]]; then
+            return 0
+        fi
+    done
+    return 1
+}
+
+# Verifica se um texto contém uma ou mais palavras
+# $1 = Texto
+# $2 = Palavra(s)
+# Retorno: 0 = contém; 1 = não contém
+texto_contem() {
+    if [[ $(echo -e "${1}" | grep -c "${2}") = 0 ]]; then
+        return 1
+    fi
+    return 0
+}
+
+# Verifica se a distro é like as $1
+# $array() deve ser atribuído antes pelo chamador, de forma global
+# Retorno: 0 = true; 1 = false
+is_like() {
+    for d in "${array[@]}"; do
+        texto_contem "${distro}" "${d}"
+        if [[ $? -eq 0 ]]; then
+            return 0
+        fi
+    done
+    return 1
+}
+
+# Verifica se a distro é Debian like
+# Retorno: 0 = true; 1 = false
+is_debian_like() {
+    # Debian Like
+    array=(
+        'Debian'
+        'Ubuntu'
+        'Mint'
+        'neon'
+        'Zorin'
+    )
+    is_like
+    return $?
+}
+
+# Verifica se a distro é Fedora like
+# Retorno: 0 = true; 1 = false
+is_fedora_like() {
+    array=(
+        'Fedora'
+    )
+    is_like
+    return $?
+}
+
+# Verifica se a distro é Manjaro like
+# Retorno: 0 = true; 1 = false
+is_manjaro_like() {
+    array=(
+        'Manjaro'
+    )
+    is_like
+    return $?
+}
+
+# Verifica se a distro é Slackware like
+# Retorno: 0 = true; 1 = false
+is_slackware_like() {
+    array=(
+        'Slackware'
+    )
+    is_like
+    return $?
+}
+
+# Verifica se a distro é Mazon OS like
+# Retorno: 0 = true; 1 = false
+is_mazon_like() {
+    array=(
+        'Mazon'
+    )
+    is_like
+    return $?
+}
 
 # Pergunta inicial
-pergunta()
-{
+pergunta() {
     echo -e "${msg_atencao}${msg_inicius}"
     read -ep "${msg_continuar}" -n 1
 
     case "$REPLY" in
-        s|S) executa ;;
-        *) echo -e "${msg_parar}"  ;;
+    s | S) executa ;;
+    *) echo -e "${msg_parar}" ;;
     esac
-    exit 0 
+    exit
+}
+
+# Exibe uma pergunta passada por parâmetro
+# $1 = frase da pergunta
+# Retorno:
+#   0-Respondeu Sim;
+#   1-Respondeu Não ou não respondeu.
+pergunta_sn() {
+    read -ep "${1}: " -n 1
+    printf %b "\n"
+    case "$REPLY" in
+    s | S) return 0 ;;
+    *) return 1 ;;
+    esac
 }
 
 # Verifica se o programa está instalado
-ver_dependencia()
-{
+ver_dependencia() {
     which ${programa}
     if [[ $? -eq 0 ]]; then
         echo -e "${programa} está instalado."
@@ -152,69 +261,67 @@ ver_dependencia()
     fi
 }
 
-# Define o gerenciador de pacotes da distro e instala o(s) pacote(s)
-instala()
-{
-    echo -e "${separa}\n"
-    if [[ "${distro}" == 'Ubuntu 21.10' ]] \
-    || [[ "${distro}" == 'Linux Mint 20.2' ]] \
-    || [[ "${distro}" == 'Ubuntu 21.04' ]] \
-    || [[ "${distro}" == 'Ubuntu 20.10' ]] \
-    || [[ "${distro}" == 'Ubuntu 20.04.2 LTS' ]] \
-    || [[ "${distro}" == 'Ubuntu 20.04.1 LTS' ]] \
-    || [[ "${distro}" == 'Ubuntu 20.04' ]] \
-    || [[ "${distro}" == 'Ubuntu 18.04.3 LTS' ]] \
-    || [[ "${distro}" == 'Ubuntu 19.04' ]] \
-    || [[ "${distro}" == 'Ubuntu 19.10' ]] \
-    || [[ "${distro}" == 'KDE neon User Edition 5.16' ]] \
-    || [[ "${distro}" == 'Debian GNU/Linux 9 (stretch)' ]] \
-    || [[ "${distro}" == 'Linux Mint 19.2' ]] \
-    || [[ "${distro}" == 'Linux Mint 19.1' ]] \
-    || [[ "${distro}" == 'Linux Mint 20' ]] \
-    || [[ "${distro}" == 'Linux Mint 20.1' ]] \
-    || [[ "${distro}" == 'Zorin OS 15.1' ]] ; then
-        sudo apt install -y ${programa}
-    fi
-
-    if [[ "${distro}" == 'Fedora 30 (Thirty)' ]]; then
-        [[ "${programa}" == 'fonts-powerline' ]] && { programa='powerline-fonts'; }
-        sudo dnf install -y ${programa} 
-    fi
-
-    if [[ "${distro}" == 'Manjaro Linux' ]]; then
-        [[ "${programa}" == 'fonts-powerline' ]] && { programa='powerline-fonts'; }
-        sudo pacman -S --noconfirm ${programa} 
-    fi
-
-    if [[ "${distro}" == 'Slackware 14.2' ]] || [[ "${distro}" == 'Mazon OS' ]]; then
-        if [[ "${programa}" == 'fonts-powerline' ]]; then
-            echo -e "${separa}\n"
-            # Instala as fontes para distros que não possuem pacotes prontos
-            # clone
-            git clone https://github.com/powerline/fonts.git --depth=1
-            # install
-            cd fonts
-            ./install.sh
-            # clean-up a bit
-            cd ..
-            rm -rf fonts
-        fi
-    fi
-
-    if [[ "${distro}" == 'Mazon OS' ]] && [[ "${programa}" == 'zsh' ]]; then
+# Instala as fontes para distros que não possuem pacotes prontos
+install_from_git() {
+    if [[ "${programa}" == 'fonts-powerline' ]]; then
         echo -e "${separa}\n"
-        wget -O /tmp/zsh-5.7.1-1.mz \
-        https://vovolinux.com.br/vovomazon/packages/var/lib/mzphp/unreleased/base/zsh-5.7.1-1.mz \
-        --no-check-certificate
-
-        sudo banana -i /tmp/zsh-5.7.1-1.mz
+        # clone
+        git clone https://github.com/powerline/fonts.git --depth=1
+        # install
+        cd fonts
+        ./install.sh
+        # clean-up a bit
+        cd ..
+        rm -rf fonts
     fi
 }
 
+# Define o gerenciador de pacotes da distro e instala o(s) pacote(s)
+instala() {
+    echo -e "${separa}\n"
+    is_debian_like
+    if [[ $? -eq 0 ]]; then
+        sudo apt install -y ${programa}
+        return 0
+    fi
+
+    is_fedora_like
+    if [[ $? -eq 0 ]]; then
+        [[ "${programa}" == 'fonts-powerline' ]] && { programa='powerline-fonts'; }
+        sudo dnf install -y ${programa}
+        return 0
+    fi
+
+    is_manjaro_like
+    if [[ $? -eq 0 ]]; then
+        [[ "${programa}" == 'fonts-powerline' ]] && { programa='powerline-fonts'; }
+        sudo pacman -S --noconfirm ${programa}
+        return 0
+    fi
+
+    is_slackware_like
+    if [[ $? -eq 0 ]]; then
+        install_from_git
+        return 0
+    fi
+
+    is_mazon_like
+    if [[ $? -eq 0 ]]; then
+        install_from_git
+        return 0
+        if [[ "${programa}" == 'zsh' ]]; then
+            echo -e "${separa}\n"
+            wget -O /tmp/zsh-5.7.1-1.mz \
+                https://vovolinux.com.br/vovomazon/packages/var/lib/mzphp/unreleased/base/zsh-5.7.1-1.mz \
+                --no-check-certificate
+
+            sudo banana -i /tmp/zsh-5.7.1-1.mz
+        fi
+    fi
+}
 
 # Execução do script
-executa()
-{
+executa() {
     echo -e "${separa}\nVerificando e instalando programas e fontes..."
     programa='wget'
     ver_dependencia
@@ -224,15 +331,15 @@ executa()
     instala
     programa='fonts-powerline'
     instala
-    
+
     # Altera o shell de bash para zsh
     echo -e "${separa}\n"
     chsh -s /bin/zsh
-    
+
     echo -e "${separa}\nObtendo o oh-my-zsh..."
     wget -O install.sh https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
-    sed -i s'/exec zsh -l/#####/'g install.sh
-    echo -e "${separa}\n"
+    #sed -i s'/exec zsh -l/#####/'g install.sh
+    exit 0
     sh install.sh
     rm -rfv install.sh
 
@@ -240,41 +347,62 @@ executa()
     sudo cp -v /etc/passwd /etc/passwd-bkp
 
     echo -e "${separa}\nObtendo usuários do sistema..."
-    cat /etc/passwd | grep "/bin/bash" | grep "home" | cut -d: -f1 > lista_users
-
+    cat /etc/passwd | grep "/bin/bash" | grep "home" | cut -d: -f1 >lista_users
 
     if [[ "${usuario}" != 'root' ]]; then
         arquivo_zshrc="/home/${usuario}/.zshrc"
     fi
- 
+
     rm -rfv lista_users
-        
+
     echo -e "${separa}\nFazendo backup do .zshrc do usuário ${usuario}..."
     cp -v "${arquivo_zshrc}" "${arquivo_zshrc}"-bkp
     echo -e "${separa}\nAlterando o tema para fino..."
     sed -i 's/ZSH_THEME=\"robbyrussell/ZSH_THEME=\"fino/'g "${arquivo_zshrc}"
 
-
     echo "${msg_final}"
     exit 0
 }
 
+# Verifica se o script já foi testado em distros semelhantes a distro atual
+# Retorno: 0 = true; 1 = false
+already_test() {
+    local _result=1
+
+    is_debian_like
+    _result=$?
+
+    is_fedora_like
+    _result=$?
+
+    is_manjaro_like
+    _result=$?
+
+    is_slackware_like
+    _result=$?
+
+    is_mazon_like
+    _result=$?
+
+    return _result
+}
 
 #------------------------------------------------------------------------------>
 
-
 #------TESTES------------------------------------------------------------------>
 
+# Verifica se a distro é Debian like
 
-# Verifica se o script já foi testado na distro atual
-for d in "${distros[@]}"; do                     
-    if [[ "${d}" == ${distro} ]]; then
-        continua=1
+# Verifica se o script já foi testado em distros semelhantes a distro atual
+already_test
+continua=$?
+if [[ $continua -eq 1 ]]; then
+    printf %b " >> Este script ainda não foi testado com ${distro}.\n"
+    if ! pergunta_sn " Deseja continuar mesmo assim? [s/N]"; then
+        echo -e "${msg_parar}"
+        exit 1
     fi
-done
-
-[[ $continua -eq 0 ]] && { echo -e "Este script ainda não foi testado com ${distro}."; exit 1;} 
-
+fi
 
 #------------------------------------------------------------------------------>
 

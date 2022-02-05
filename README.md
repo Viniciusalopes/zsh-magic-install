@@ -88,10 +88,10 @@ Quando a instalação estiver concluída, basta reiniciar a sessão, que as conf
 ### Alterações recentes
 ![zsh-magic-install-header-script](https://raw.githubusercontent.com/Viniciusalopes/zsh-magic-install/master/imagens/2022-02-05_05-21-zsh-magic-install-header-script.png)
 
-### Saída 1 de instalação normal
+### Saída 1 de instalação normal (quando já instalado anteriormente)
 ![zsh-magic-install-screen1](https://raw.githubusercontent.com/Viniciusalopes/zsh-magic-install/master/imagens/2022-02-05_05-21-zsh-magic-install-screen1.png)
 
-### Saída 2 de instalação normal
+### Saída 2 de instalação normal (quando já instalado anteriormente)
 ![zsh-magic-install-screen2](https://raw.githubusercontent.com/Viniciusalopes/zsh-magic-install/master/imagens/2022-02-05_05-21-zsh-magic-install-screen2.png)
 
 ### Debian GNU/Linux 11 (bullseye)

@@ -18,7 +18,8 @@
 # 2022-02-05 [v1.0.8] - Incluída a opção de continuar mesmo que este script
 #                       ainda não tenha sido testado com a distribuição atual;
 #                     - Verificação de distros testadas alterada para like as;
-#                     - Testado com 'Debian GNU/Linux 11 (bullseye)'.
+#                     - Testado com 'Debian GNU/Linux 11 (bullseye)';
+#                     - Removida a flag 'continua', testando pelo retorno $?.
 #
 # 2021-10-24 [v1.0.7] - Testado com 'Ubuntu Studio 21.10'
 #
@@ -60,9 +61,6 @@ if ! [[ -e /etc/os-release ]]; then
 fi
 
 distro=$(cat /etc/"${release}" | grep "${linha}" | cut -d"\"" -f2)
-
-# Flag para continuar o script
-continua=0
 
 # Dependência necessária
 programa=''
@@ -377,8 +375,7 @@ already_test() {
 
 # Verifica se o script já foi testado em distros semelhantes a distro atual
 already_test
-continua=$?
-if [[ $continua -eq 1 ]]; then
+if [[ $? -eq 1 ]]; then
     printf %b " >> Este script ainda não foi testado com ${distro}.\n"
     if ! pergunta_sn " Deseja continuar mesmo assim? [s/N]"; then
         echo -e "${msg_parar}"

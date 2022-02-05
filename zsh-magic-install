@@ -373,7 +373,7 @@ if [[ $continua -eq 1 ]]; then
     printf %b " >> Este script ainda não foi testado com ${distro}.\n"
     if ! pergunta_sn " Deseja continuar mesmo assim? [s/N]"; then
         echo -e "${msg_parar}"
-         1
+        exit 1
     fi
 fi
 

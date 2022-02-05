@@ -342,24 +342,33 @@ executa() {
 # Verifica se o script já foi testado em distros semelhantes a distro atual
 # Retorno: 0 = true; 1 = false
 already_test() {
-    local _result=1
 
     is_debian_like
-    _result=$?
+    if [[ $? -eq 0 ]]; then
+        return 0
+    fi
 
     is_fedora_like
-    _result=$?
+    if [[ $? -eq 0 ]]; then
+        return 0
+    fi
 
     is_manjaro_like
-    _result=$?
+    if [[ $? -eq 0 ]]; then
+        return 0
+    fi
 
     is_slackware_like
-    _result=$?
+    if [[ $? -eq 0 ]]; then
+        return 0
+    fi
 
     is_mazon_like
-    _result=$?
+    if [[ $? -eq 0 ]]; then
+        return 0
+    fi
 
-    return $_result
+    return 1
 }
 
 #------------------------------------------------------------------------------>

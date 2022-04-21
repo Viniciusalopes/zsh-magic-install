@@ -60,7 +60,7 @@ Para instalar para o usuário r00t, então digite:
 
 e depois:
 
-```# /tmp/zsh-magic-install```
+```# bash /tmp/zsh-magic-install```
 
 ---
 

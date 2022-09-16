@@ -18,6 +18,8 @@ Ah! sem trauma e sem teoria! ;)
 ---
 ### Onde funciona?
 Até o momento foram testadas e instaladas com sucesso as seguintes distribuições Gnu/Linux:
+- Ubuntu 22.04 LTS
+- Ubuntu 22.04 LTS on WSL version: 0.66.2.0
 - Mazon OS 1.4.3-beta - XFCE
 - Ubuntu Studio 19.04 - XFCE
 - Fedora 30 (Thirty) KDE Plasma

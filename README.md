@@ -44,7 +44,9 @@ O script instala automaGicamente os pacotes 'wget', 'git', 'fontes powerline', '
 ### Instalação
 Faça o download no terminal com o comando:
 
-```# wget -O /tmp/zsh-magic-install https://raw.githubusercontent.com/Viniciusalopes/zsh-magic-install/master/zsh-magic-install```
+````shell
+wget -O /tmp/zsh-magic-install https://raw.githubusercontent.com/Viniciusalopes/zsh-magic-install/master/zsh-magic-install
+````
 
 Execute o script uma vez para cada usuário que desejar instalar o zsh.
 
@@ -52,17 +54,24 @@ Execute o script uma vez para cada usuário que desejar instalar o zsh.
 
 Para instalar para o seu usuário do sistema, apenas digite:
 
-```$ bash /tmp/zsh-magic-install```
+````shell
+bash /tmp/zsh-magic-install
+````
 
 ---
 
 Para instalar para o usuário r00t, então digite:
 
-```$ sudo su```
+````shell
+sudo su
+````
+
 
 e depois:
 
-```# bash /tmp/zsh-magic-install```
+````shell
+bash /tmp/zsh-magic-install```
+````
 
 ---
 
